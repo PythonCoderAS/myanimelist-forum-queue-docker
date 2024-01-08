@@ -1,10 +1,11 @@
+ARG PYTHON_VERSION=3.8
+
+FROM alpine/git as clone
+
 ARG GIT_REPO=myanimelist-forum-queue
 ARG GIT_OWNER=PythonCoderAS
 ARG GIT_CLONE_URL="https://github.com/${GIT_OWNER}/${GIT_REPO}.git"
 ARG GIT_BRANCH=master
-ARG PYTHON_VERSION=3.8
-
-FROM alpine/git as clone
 
 RUN git clone --depth 1 --branch ${GIT_BRANCH} ${GIT_CLONE_URL} /app
 RUN rm -rf /app/.git
