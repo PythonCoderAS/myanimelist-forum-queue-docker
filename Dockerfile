@@ -17,7 +17,11 @@ COPY --from=clone /app /app
 WORKDIR /app
 
 RUN ["pip", "install", "pipenv"]
+
+# I have *no* idea why we need to do this, some weird dependency soup
+RUN ["pipenv", "sync"]
 RUN ["pipenv", "lock"]
+
 RUN ["sh", "-c", "pipenv requirements --dev > requirements.txt"]
 RUN ["rm", "Pipfile", "Pipfile.lock"]
 
