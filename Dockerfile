@@ -1,8 +1,8 @@
-ARG GIT_REPO="Repo name"
+ARG GIT_REPO=myanimelist-forum-queue
 ARG GIT_OWNER=PythonCoderAS
 ARG GIT_CLONE_URL="https://github.com/${GIT_OWNER}/${GIT_REPO}.git"
 ARG GIT_BRANCH=master
-ARG PYTHON_VERSION=3.12
+ARG PYTHON_VERSION=3.8
 
 FROM alpine/git as clone
 
@@ -16,6 +16,7 @@ COPY --from=clone /app /app
 WORKDIR /app
 
 RUN ["pip", "install", "pipenv"]
+RUN ["pipenv", "lock"]
 RUN ["sh", "-c", "pipenv requirements --dev > requirements.txt"]
 RUN ["rm", "Pipfile", "Pipfile.lock"]
 
@@ -35,4 +36,4 @@ COPY --from=build /venv /venv
 COPY --from=clone /app /app
 WORKDIR /app
 ENV PATH="/venv/bin:$PATH"
-ENTRYPOINT [ "python3", "/app/bot.py" ]
+ENTRYPOINT [ "python3", "/app/myanimelist_forum_queue/manage.py", "runserver" ]
