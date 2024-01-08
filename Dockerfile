@@ -19,6 +19,7 @@ WORKDIR /app
 RUN ["pip", "install", "pipenv"]
 
 # I have *no* idea why we need to do this, some weird dependency soup
+RUN ["pipenv", "run", "pip", "install", "pygments"]
 RUN ["pipenv", "sync"]
 RUN ["pipenv", "lock"]
 
@@ -34,6 +35,7 @@ COPY --from=generate-requirements /app/requirements.txt ./
 
 RUN ["python3", "-m", "venv", "/venv"]
 ENV PATH="/venv/bin:$PATH"
+RUN ["pip", "install", "pygments"]
 RUN ["python3", "-m", "pip", "install", "-r", "requirements.txt"]
 
 FROM python:${PYTHON_VERSION}-slim as final
